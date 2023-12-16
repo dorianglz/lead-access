@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import { AuthProvider } from './context/AuthProvider';
 
 import {
   createBrowserRouter,
@@ -9,22 +10,30 @@ import {
 
 // PAGES
 import MainPage from './Main.js'
-import Register from './Register.js';
+import Login from './Login.js';
+import Collaborators from './collaborators.js';
+import { PrivateRoute } from './component/privateRoute.js';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainPage />,
+    element: <PrivateRoute> <MainPage /> </PrivateRoute>,
   },
   {
-    path: "/register",
-    element: <Register />,
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/collaborators",
+    element: <PrivateRoute> <Collaborators /> </PrivateRoute>,
   },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>
 );

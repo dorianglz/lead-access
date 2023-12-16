@@ -4,16 +4,13 @@
   flex-direction: column;
 }
 
-img {
-  border: 1px solid yellow;
-}
-
 .Header {
   display: flex;
   background-color: #24398A;
   align-items: center;
   justify-content: space-between;
   padding: 10px 40px;
+  min-height: 60px;
 }
 
 .tabs {
@@ -31,11 +28,12 @@ img {
 }
 
 .profil {
-  border: 1px solid red;
   display: flex;
   align-items: center;
   height: auto;
   gap: 10px;
+  position: relative;
+  padding: 0 10px 0 0;
 }
 
 .username {
@@ -52,14 +50,50 @@ img {
 }
 
 .stat {
-  background-color: aquamarine;
-
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  font-size: 20px;
 }
 
 .filter {
-  background-color: yellow;
+  display: flex;
 }
 
-.leads {
-  
+.filter-names {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* .filter-title {
+
+}
+
+.filter-input {
+
+}
+
+/* .leads {
+} */
+
+.floating-menu {
+  position: absolute;
+  border: 1px solid #24398A;
+  border-radius: 10px;
+  top: 80px;
+  right: 0;
+  width: 150px;
+  padding: 10px 10px;
+}
+
+.floating-label {
+  font-size: 20px;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+}
+
+.floating-label:hover {
+  font-weight: 700;
 }

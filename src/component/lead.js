@@ -9,41 +9,51 @@ function InfoCol(props) {
     );
 }
 
-function Lead() {
-  return (
-    <div className="lead">
-        <h2 className="names">Nom prenom</h2>
-        <div className="row-1">
-            <InfoCol label="Email" value={"maydorma11@live.fr"} />
-            <InfoCol label="Téléphone" value={"0782403961"} />
-            <InfoCol label="Propriétaire" value={"Propriétaire"} />
-        </div>
-        <div className="row-1">
-            <InfoCol label="Imposition" value={">2500"} />
-            <InfoCol label="Année de naissance" value={"1993"} />
-            <InfoCol label="Code postal" value={"92170"} />
-        </div>
-        <div className="row-1">
-            <InfoCol label="Profession" value={"Développeur"} />
-            <InfoCol label="Situation familiale" value={"Célibataire"} />
-            <InfoCol label="Status juridique" value={"Salarié"} />
-        </div>
-        <div className="row-1">
-            <InfoCol label="Addresse" value={"118 avenue jean jaures"} />
-            <InfoCol label="Enfant ?" value={"Oui"} />
-        </div>
-        <div className="commentaire">
-            <p className='info-label'>Commentaire</p>
-            <p className='info-commentaire'>Ceci est mon commentaire</p>
-        </div>
-        <div className='footer'>
-            <div className='footer-agent'>
-                <p className='footer-label'>Agent : </p>
-                <p className='footer-value'>Dorian Gonzalez</p>
+function Lead(props) {
+
+    const { 
+        firstname,
+        lastname,
+        email,
+        phone_number_concatenated,
+        zipcode,
+        year_of_birth,
+        housing_status } = props.lead;
+    
+    return (
+        <div className="lead">
+            <h2 className="names">{firstname + " " + lastname}</h2>
+            <div className="row-1">
+                <InfoCol label="Email" value={email} />
+                <InfoCol label="Téléphone" value={phone_number_concatenated.length < 10 ? "0" + phone_number_concatenated : phone_number_concatenated} />
+                <InfoCol label="Propriétaire" value={housing_status} />
+            </div>
+            <div className="row-1">
+                <InfoCol label="Imposition" value={"EMPTY"} />
+                <InfoCol label="Année de naissance" value={year_of_birth} />
+                <InfoCol label="Code postal" value={zipcode} />
+            </div>
+            <div className="row-1">
+                <InfoCol label="Profession" value={"EMPTY"} />
+                <InfoCol label="Situation familiale" value={"EMPTY"} />
+                <InfoCol label="Status juridique" value={"EMPTY"} />
+            </div>
+            <div className="row-1">
+                <InfoCol label="Addresse" value={"EMPTY"} />
+                <InfoCol label="Enfant ?" value={"EMPTY"} />
+            </div>
+            <div className="commentaire">
+                <p className='info-label'>Commentaire</p>
+                <p className='info-commentaire'>Ceci est mon commentaire</p>
+            </div>
+            <div className='footer'>
+                <div className='footer-agent'>
+                    <p className='footer-label'>Agent : </p>
+                    <p className='footer-value'>Dorian Gonzalez</p>
+                </div>
             </div>
         </div>
-    </div>
-  );
+    );
 }
 
 export default Lead;
