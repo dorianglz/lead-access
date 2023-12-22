@@ -36,4 +36,52 @@ export const Region = {
         display: "Occitanie",
         CodePostal : ["82", "81", "66", "65", "48"]
     },
+    AQUITAINE: {
+        display: "Nouvelle-Aquitaine",
+        CodePostal : ["87", "86", "79", "64", "47"]
+    },
+    AUVERGNE: {
+        display: "Auvergne-Rhône-Alpes",
+        CodePostal : ["74", "73", "69", "63", "43"]
+    },
+    BOURGOGNE: {
+        display: "Bourgogne-Franche-Comté",
+        CodePostal : ["90", "89", "71", "70", "58"]
+    },
+    GRANDEST: {
+        display: "Grand Est",
+        CodePostal : ["88", "68", "67", "57", "55"]
+    },
+    NORMANDIE: {
+        display: "Normandie",
+        CodePostal : ["76", "61", "50", "27", "14"]
+    },
+    REUNION: {
+        display: "La Réunion",
+        CodePostal : ["974"]
+    },
+    MARTINIQUE: {
+        display: "Martinique",
+        CodePostal : ["972"]
+    },
+    MAYOTTE: {
+        display: "Mayotte",
+        CodePostal : ["976"]
+    },
+    GUYANE: {
+        display: "Guyane",
+        CodePostal : ["973"]
+    },
+    GUADELOUPE: {
+        display: "Guadeloupe",
+        CodePostal : ["971"]
+    },
+    CORSE: {
+        display: "Corse",
+        CodePostal : ["2A", "2B"]
+    },
+    CENTREVAL: {
+        display: "Centre-Val de Loire",
+        CodePostal : ["45", "41", "37", "36", "28"]
+    },
 }

@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import "./style/Collaborators.css"
-import addIcon from './images/add_icon.svg'
-import rmIcon from './images/rm_icon.svg'
-import Header from "./component/header";
-import { createCollaborator, getCollaborators, getManagerLeads, getNRPCount, getUser } from "./api/axios";
-import AuthContext from "./context/AuthProvider";
+import { clearNRP, createCollaborator, getCollaborators, getManagerLeads, getNRPCount, getUser, getUserEmail } from "./api/axios";
 import { UserType } from "./context/enums";
+import addIcon from './images/add_icon.svg'
+import Header from "./component/header";
+import AuthContext from "./context/AuthProvider";
+import Collaborator from "./component/collaborator";
+
+import "./style/Collaborators.css"
 
 function Stat(props) {
     const { label, value } = props;
@@ -28,46 +29,6 @@ function Input(props) {
         </div>);
 }
 
-function Collaborator(props) {
-    
-    const { user } = props;
-
-    return (
-        <div className="collaborator">
-            <div className="first-row">
-                <p className="col-name">{user.firstname + " " + user.lastname}</p>
-                <p className="number-of-leads">300 leads</p>
-            </div>
-            <div className="second-row">
-                <div className="col-email">
-                    <p className="email-label">Email</p>
-                    <p className="email-value">{user.email}</p>
-                </div>
-                <div className="col-add-leads">
-                    <div className="add-leads">
-                        <select id="dropdown-region" defaultValue={'DEFAULT'}>
-                            <option value="DEFAULT" disabled>Choisir une région</option>
-                            <option value="valeur1">Ile-de-France / Hauts-de-France</option>
-                            <option value="valeur2">Provence-Alpes-Côte d’Azur</option>
-                            <option value="valeur3">Auvergne-Rhône-Alpes</option>
-                        </select>
-                        <p className="number-selected-leads">10 leads</p>
-                    </div>
-                    <div className="buttons">
-                        <img id="icons" src={rmIcon} alt="rm Icon" />
-                        <input id="add-leads-btn" type="button" value={"Ajouter 50 leads"}/>
-                        <img id="icons" src={addIcon} alt="Add leads Icon" />
-                    </div>
-                </div>
-            </div>
-            <div className="action-btns">
-                <input className="actions" type="button" value={"Reset password"}/>
-                {/* <input className="actions" type="button" value={"Supprimer"}/> */}
-            </div>
-        </div>
-    );
-}
-
 export default function Collaborators() {
 
     const { auth } = useContext(AuthContext)
@@ -77,41 +38,42 @@ export default function Collaborators() {
     const [ email, setEmail ] = useState("")
     const [ firstname, setFirstname ] = useState("")
     const [ lastname, setLastname ] = useState("")
-    
     const [ manager, setManager ] = useState("")
-    
     const [ nrpCount, setNrpCount ] = useState(0)
 
     const isManager = auth.user_type === UserType.MANAGER;
 
     useEffect(() => {
         if (auth.user_type === UserType.MANAGER) {
-            getCollaborators(auth.id).then((res) => { setCollaborators(res.data) })
-            getManagerLeads(auth.id).then((res) => { setLeads(res.data) })
-            getNRPCount().then((res) => { setNrpCount(res.data) })
+            getCollaborators(auth.id).then((res) => { if (res) setCollaborators(res.data) })
+            getManagerLeads(auth.id).then((res) => { if (res) setLeads(res.data) })
+            getNRPCount().then((res) => { if (res) setNrpCount(res.data) })
         } else if (auth.user_type === UserType.USER) {
-            getUser(auth.manager_id).then((res) => { setManager(res.data) })
+            getUser(auth.manager_id).then((res) => { if (res) setManager(res.data) })
         }
     })
 
     const addCollaborateur = () => {
-        
-        if (email !== "" && firstname !== "" && lastname !== "") {
-            const json = JSON.stringify({
-                email: email,
-                password: "123123123",
-                firstname: firstname,
-                lastname: lastname,
-                user_type: UserType.USER,
-                manager_id: 1
-            });
-
-            createCollaborator(json)
-            
-            setEmail("")
-            setLastname("")
-            setFirstname("")
-        }
+        getUserEmail(email).then((res) => {
+            if (res) {
+                if (email !== "" && firstname !== "" && lastname !== "") {
+                    const json = JSON.stringify({
+                        email: email,
+                        password: "123123123",
+                        firstname: firstname,
+                        lastname: lastname,
+                        user_type: UserType.USER,
+                        manager_id: 1
+                    });
+                    createCollaborator(json)
+                    setEmail("")
+                    setLastname("")
+                    setFirstname("")
+                }
+            } else {
+                alert("Email non disponible")
+            }
+        })
     }
 
     return (
@@ -134,7 +96,7 @@ export default function Collaborators() {
                 </div>}
                 {isManager && <div className="nrp-col">
                     <p className="nrps">{nrpCount + " NRP"}</p>
-                    <input className="actions" type="button" value={"Récupérer tous les NRP"}/>
+                    <input className="actions" onClick={() => clearNRP()} type="button" value={"Récupérer tous les NRP"}/>
                 </div>}
                 {isManager && <div className="collaborators-list">
                     {collaborators.map((c) => {

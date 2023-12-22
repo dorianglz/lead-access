@@ -59,6 +59,7 @@
 
 .filter {
   display: flex;
+  justify-content: space-between;
 }
 
 .filter-names {
@@ -86,4 +87,19 @@
 
 .floating-label:hover {
   font-weight: 700;
+}
+
+#filter-statut {
+  background-color: #24398A;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  height: 38px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: none;
+}
+
+#filter-statut:focus-visible {
+  outline: none;
 }

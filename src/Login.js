@@ -10,17 +10,11 @@ import "./style/Login.css"
 export default function Login() {
 
     const nav = useNavigate()
+    const errRef = useRef();
     const { auth, setAuth } = useContext(AuthContext);
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
-
-    const errRef = useRef();
-
-    const [values, setValues] = useState(
-        {
-            email: "",
-            password: ""
-        });
+    const [values, setValues] = useState({ email: "", password: "" });
 
     const handleSubmit = async (e) => {
         e.preventDefault();

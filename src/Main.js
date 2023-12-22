@@ -1,16 +1,18 @@
-import './style/App.css';
+import AuthContext from './context/AuthProvider';
 import Lead from './component/lead';
 import Header from './component/header';
 import { getManagerLeads, getUserLeads } from './api/axios';
 import { useContext, useEffect, useState } from 'react';
-import AuthContext from './context/AuthProvider';
-import { UserType } from './context/enums';
+import { LeadStatus, UserType } from './context/enums';
+
+import './style/App.css';
 
 function MainPage() {
 
   const { auth } = useContext(AuthContext)
 
   const [ input, setInput ] = useState("")
+  const [ statut, setStatut ] = useState("")
   const [ pagelaod, setPageload ] = useState(false)
   const [ leads, setLeads ] = useState([])
   const [ display, setDisplay ] = useState([])
@@ -36,12 +38,9 @@ function MainPage() {
       const l = makeString(lead).toLocaleLowerCase()
       const i = input.toLocaleLowerCase()
 
-      //console.log("l : ", l, "i : ", i)
-
       return l.includes(i)
     })
     setDisplay(result);
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [input])
 
@@ -72,7 +71,8 @@ function MainPage() {
       <Header />
       <div className='body'>
         <div className='stat-title'>
-          <h1 style={{color: "#24398A"}}>{display.length === 0 ? leads.length : display.length}</h1>
+          <h1 style={{color: "#24398A"}}>{input.length === 0 ? leads.filter((l) => statut !== "" ? l.statut === statut : true).length 
+          : display.filter((l) => statut !== "" ? l.statut === statut : true).length}</h1>
           <h1>{leads.length > 1 ? "leads" : "lead"}</h1>
         </div>
         <div className='filter'>
@@ -82,17 +82,26 @@ function MainPage() {
             id='search' placeholder='Nom, prénom, téléphone, email...'
             onChange={(e) => handleChange(e)}/>
           </div>
+          <div className='filter-names'>
+            <h2 className='filter-tilte'>Statut</h2>
+            <select id="filter-statut" defaultValue={statut ? statut : ''}
+            onChange={(e) => { setStatut(e.target.value) }}>
+            <option value="" >Choisir un statut</option>
+              {Object.values(LeadStatus).map((l, i) => {
+                  return <option key={i} value={l}>{l}</option>
+                })
+              }
+            </select>
+          </div>
         </div>
         <div className='leads'>
-          {/* {leads && leads.map((lead) => {
-            return <Lead lead={lead}/>;
-          })} */}
-          {input.length === 0 ? leads.map((lead, i) => {
-            return <Lead key={i} lead={lead}/>;
-          }) 
-          : display.map((lead, i) => {
-            return <Lead key={i} lead={lead}/>;
-          })}
+          { input.length === 0 ?
+          leads.filter((l) => statut !== "" ? l.statut === statut : true)
+          .map((lead) => { return <Lead key={lead.id} lead={lead}/> }) :
+          
+          display.filter((l) => statut !== "" ? l.statut === statut : true)
+          .map((lead) => { return <Lead key={lead.id} lead={lead}/> })
+          }
         </div>
       </div>
     </div>
@@ -100,40 +109,3 @@ function MainPage() {
 }
 
 export default MainPage;
-
-
-/**
- * 
- * SAVE
- * 
- *   const filterEmail = () => {
-    return leads.filter(l => l.email.includes(input));
-  }
-
-  const filterFirstname = () => {
-    return leads.filter(l => l.firstname.includes(input));
-  }
-
-  const filterPhone = () => {
-    return leads.filter(l => l.phone_number_concatenated.includes(input));
-  }
-
-  const updateFilter = () => {
-    //console.log("target", e.target.value)
-
-
-    const emailFilter = filterEmail();
-      const firstnameFilter = filterFirstname();
-      const phoneFilter = filterPhone();
-      
-      console.log("input : ", input)
-
-      console.log("email :", emailFilter.length,
-       "fisrtanme :", firstnameFilter.length,
-       "phone :", phoneFilter.length)
-      
-      const result = [...new Set([...emailFilter, ...firstnameFilter, ...phoneFilter])]
-      setDisplay(result)
-      //console.log("display :", display.length)
-  }
- */

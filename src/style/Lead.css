@@ -18,9 +18,30 @@
     color: #24398A;
 }
 
+.input-names {
+    width: fit-content;
+    gap: 10px;
+    display: flex;
+}
+
+#input-name {
+    font-size: 34px;
+    font-weight: 700;
+    color: #24398A;
+    border: unset;
+    background-color: unset;
+    padding: 0;
+    height: fit-content;
+    width: 40%;    
+}
+
+#input-name-save {
+    width: 40px;
+    height: 40px;
+}
+
 .row-1 {
     display: flex;
-    /* border: 1px solid blue; */
     gap: 10px;
 }
 
@@ -84,7 +105,8 @@
 }
 
 .info-commentaire {
-    text-align: center;
+    align-self: flex-start;
+    font-weight: 600;
 }
 
 #com-value {
@@ -97,6 +119,8 @@
     font-weight: 700;
     font-size: 15px;
     color: #24398A;
+    flex-grow: 1;
+    min-height: 50px;
 }
 
 #saveIconCom {
@@ -112,6 +136,7 @@
     display: flex;
     align-items: center;
     padding: 0 20px;
+    justify-content: space-between;
 }
 
 .footer-agent {
@@ -130,4 +155,22 @@
     font-weight: 700;
     font-size: 15px;
     color: #FFF;
+}
+
+.footer-status {
+    display: flex;
+    gap: 10px;
+}
+
+#dropdown-statut {
+    background-color: unset;
+    color: #FFF;
+    border: unset;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+#dropdown-statut:focus-visible {
+    outline: unset;
 }
