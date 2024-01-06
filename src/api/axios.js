@@ -1,14 +1,15 @@
 import axios from 'axios';
 
-const URL = "http://127.0.0.1:8080"
+//const URL = "http://127.0.0.1:8080"
+const URL = "http://51.178.83.139/api"
 
-export default axios.create({
+const axiosInstance = axios.create({
     baseURL: URL
 });
 
 export async function getLeads() {
     try {
-        const res = await axios.get(URL + "/leads");
+        const res = await axiosInstance.get("leads");
         return (res);
     } catch (err) {
         console.error(err);
@@ -17,7 +18,7 @@ export async function getLeads() {
 
 export async function getManagerLeads(id) {
     try {
-        const res = await axios.get(URL + "/leads/manager/" + id);
+        const res = await axiosInstance.get("leads/manager/" + id);
         return (res);
     } catch (err) {
         console.error(err);
@@ -26,7 +27,7 @@ export async function getManagerLeads(id) {
 
 export async function getUserLeads(id) {
     try {
-        const res = await axios.get(URL + "/leads/user/" + id);
+        const res = await axiosInstance.get("leads/user/" + id);
         return (res);
     } catch (err) {
         console.error(err);
@@ -35,7 +36,7 @@ export async function getUserLeads(id) {
 
 export async function getUser(id) {
     try {
-        const res = await axios.get(URL + "/users/" + id);
+        const res = await axiosInstance.get("users/" + id);
         return (res);
     } catch (err) {
         console.error(err);
@@ -45,7 +46,7 @@ export async function getUser(id) {
 export async function getUserEmail(email) {
     try {
         const json = JSON.stringify({ email: email })
-        const res = await axios.post(URL + "/users/email", json,
+        const res = await axiosInstance.post("users/email", json,
         {
             headers: {
                 'Content-Type': 'application/json'
@@ -59,7 +60,7 @@ export async function getUserEmail(email) {
 
 export async function getNRP() {
     try {
-        const res = await axios.get(URL + "/nrp");
+        const res = await axiosInstance.get("nrp");
         return (res);
     } catch (err) {
         console.error(err);
@@ -68,7 +69,7 @@ export async function getNRP() {
 
 export async function clearNRP() {
     try {
-        const res = await axios.get(URL + "/leads/clear");
+        const res = await axiosInstance.get("leads/clear");
         return (res);
     } catch (err) {
         console.error(err);
@@ -77,7 +78,7 @@ export async function clearNRP() {
 
 export async function getNRPCount() {
     try {
-        const res = await axios.get(URL + "/nrp/count");
+        const res = await axiosInstance.get("nrp/count");
         return (res);
     } catch (err) {
         console.error(err);
@@ -86,7 +87,7 @@ export async function getNRPCount() {
 
 export async function createCollaborator(json) {
     try {
-        const res = await axios.post(URL + "/users", json,
+        const res = await axiosInstance.post("users", json,
         {
             headers: {
                 'Content-Type': 'application/json'
@@ -101,7 +102,7 @@ export async function createCollaborator(json) {
 
 export async function getLeadsDepartementCount(json) {
     try {
-        const res = await axios.post(URL + "/leads/departement/count", json,
+        const res = await axiosInstance.post("leads/departement/count", json,
             {
                 headers: {
                     'Content-Type': 'application/json'
@@ -116,7 +117,7 @@ export async function getLeadsDepartementCount(json) {
 
 export async function updateLead(id, json) {
     try {
-        const res = await axios.post(URL + "/leads/" + id, json,
+        const res = await axiosInstance.post("leads/" + id, json,
         {
             headers: {
                 'Content-Type': 'application/json'
@@ -131,7 +132,7 @@ export async function updateLead(id, json) {
 
 export async function addLeads(id, json) {
     try {
-        const res = await axios.post(URL + "/leads/user/" + id, json,
+        const res = await axiosInstance.post("leads/user/" + id, json,
         {
             headers: {
                 'Content-Type': 'application/json'
@@ -146,7 +147,7 @@ export async function addLeads(id, json) {
 
 export async function getCollaborators(id) {
     try {
-        const res = await axios.get(URL + "/collaborators/" + id);
+        const res = await axiosInstance.get("collaborators/" + id);
         return (res);
     } catch (err) {
         console.error(err);

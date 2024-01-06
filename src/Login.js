@@ -16,11 +16,17 @@ export default function Login() {
     const [success, setSuccess] = useState(false);
     const [values, setValues] = useState({ email: "", password: "" });
 
+    const URL = "http://51.178.83.139/api"
+
+    const axiosInstance = axios.create({
+        baseURL: URL
+    });
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const { email, password } = values
-            const response = await axios.post('http://127.0.0.1:8080/login',
+            const response = await axiosInstance.post('login',
                 JSON.stringify({ email, password }),
                 {
                     headers: {
