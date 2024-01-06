@@ -4,11 +4,15 @@ import { useNavigate } from "react-router-dom";
 import AuthContext from "./context/AuthProvider";
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import dotenv from 'dotenv'
 
 import "./style/Login.css"
 
-export default function Login() {
 
+export default function Login() {
+    
+    dotenv.config()
+    
     const nav = useNavigate()
     const errRef = useRef();
     const { auth, setAuth } = useContext(AuthContext);
@@ -16,7 +20,7 @@ export default function Login() {
     const [success, setSuccess] = useState(false);
     const [values, setValues] = useState({ email: "", password: "" });
 
-    const URL = "http://51.178.83.139/api"
+    const URL = process.env.HOST_URL;
 
     const axiosInstance = axios.create({
         baseURL: URL

@@ -1,7 +1,9 @@
 import axios from 'axios';
+import dotenv from 'dotenv'
+dotenv.config()
 
 //const URL = "http://127.0.0.1:8080"
-const URL = "http://51.178.83.139/api"
+const URL = process.env.HOST_URL;
 
 const axiosInstance = axios.create({
     baseURL: URL
