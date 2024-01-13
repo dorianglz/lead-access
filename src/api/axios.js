@@ -49,9 +49,15 @@ export async function getManagerLeadsCountNotAssigned(id) {
     }
 }
 
-export async function getUserLeads(id) {
+export async function getUserLeads(id, search, limit, offset) {
     try {
-        const res = await axiosInstance.get("leads/user/" + id);
+        const json = JSON.stringify({ search: search, limit: limit, offset: offset })
+        const res = await axiosInstance.post("leads/users/" + id, json,
+        {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
         return (res);
     } catch (err) {
         console.error(err);

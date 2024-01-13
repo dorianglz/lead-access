@@ -34,7 +34,11 @@ function MainPage() {
   })
 
   const fetchNextPage = () => {
-    getManagerLeads(auth.id, input, itemParPage, (currentPage + 1) * itemParPage).then((res) => setLeads([...leads, ...res.data]))
+    if (auth.user_type === UserType.MANAGER) {
+      getManagerLeads(auth.id, input, itemParPage, (currentPage + 1) * itemParPage).then((res) => setLeads([...leads, ...res.data]))
+    } else {
+      getUserLeads(auth.id, input, itemParPage, (currentPage + 1) * itemParPage).then((res) => setLeads([...leads, ...res.data]))
+    }
     setCurrentPage(currentPage + 1)
   }
 
@@ -49,7 +53,7 @@ function MainPage() {
         getManagerLeads(auth.id, input, itemParPage, currentPage * itemParPage).then((res) => setLeads(res.data))
         getManagerLeadsCount(auth.id).then((res) => setTotalCount(res.data))
       } else {
-        getUserLeads(auth.id).then((res) => setLeads(res.data))      
+        getUserLeads(auth.id, input, itemParPage, currentPage * itemParPage).then((res) => setLeads(res.data))      
         getUserLeadsCount(auth.id).then((res) => setTotalCount(res.data))      
       }
       setPageload(true)
@@ -61,12 +65,16 @@ function MainPage() {
       setCurrentPage(0)
       setLeads([])
       setInput(e.target.value)
-      getManagerLeads(auth.id, input, itemParPage, currentPage * itemParPage).then((res) => setLeads(res.data))
+      if (auth.user_type === UserType.MANAGER) {
+        getManagerLeads(auth.id, input, itemParPage, currentPage * itemParPage).then((res) => setLeads(res.data))
+      } else {
+        getUserLeads(auth.id, input, itemParPage, currentPage * itemParPage).then((res) => setLeads(res.data))
+      }
     }
   }
 
   setup();
-  
+
   return (
     <div className="App">
       <Header />
@@ -112,7 +120,6 @@ function MainPage() {
         { !unique && <div className='leads'>
           { 
             leads?.map((lead) => {
-              console.log(lead)
               return <Lead key={lead.id} lead={lead}/>
             })
           }
@@ -125,33 +132,3 @@ function MainPage() {
 }
 
 export default MainPage;
-
-
-  // useEffect(() => {
-  //   const result = leads.filter((lead) => {
-  //     const l = makeString(lead).toLocaleLowerCase()
-  //     const i = input.toLocaleLowerCase()
-
-  //     return l.includes(i)
-  //   })
-  //   setDisplay(result);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [input])
-
-  // const formatNumer = (num) => {
-  //   if (num[0] !== '0' && num.length < 10) {
-  //     return '0' + num;
-  //   } else {
-  //     return num;
-  //   }
-  // }
-
-  // const makeString = (lead) => {
-  //   return (lead.email
-  //   + " " + lead.firstname
-  //   + " " + lead.lastname
-  //   + " " + formatNumer(lead.phone_number_concatenated)
-  //   + " " + lead.departement
-  //   + " " + lead.year_of_birth
-  //   + " " + lead.zipcode);
-  // }
