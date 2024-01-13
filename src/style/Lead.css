@@ -9,7 +9,7 @@
     border: 1px solid #6B6B6B;
     border-radius: 20px;
     padding: 20px;
-    gap: 15px;
+    gap: 25px;
     margin-bottom: 30px;
 }
 
@@ -50,18 +50,19 @@
     flex-direction: column;
     align-content: stretch;
     flex: 1 1 0;
+    gap: 5px;
 }
 
 .info-label {
     font-weight: 500;
-    font-size: 15px;
+    font-size: 18px;
     color: #252525;
     opacity: 75%;
 }
 
 .info-value {
     font-weight: 700;
-    font-size: 15px;
+    font-size: 18px;
     color: #252525;
 }
 
@@ -79,7 +80,7 @@
     padding: unset;
     background-color: unset;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 18px;
     color: #24398A;
 }
 
@@ -117,7 +118,7 @@
     padding: unset;
     background-color: unset;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 18px;
     color: #24398A;
     flex-grow: 1;
     min-height: 50px;
@@ -146,14 +147,14 @@
 
 .footer-label {
     font-weight: 500;
-    font-size: 15px;
+    font-size: 18px;
     color: #FFF;
     opacity: 75%;
 }
 
 .footer-value {
     font-weight: 700;
-    font-size: 15px;
+    font-size: 18px;
     color: #FFF;
 }
 
@@ -167,7 +168,7 @@
     color: #FFF;
     border: unset;
     font-family: inherit;
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 600;
 }
 

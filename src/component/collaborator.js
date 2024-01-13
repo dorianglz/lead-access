@@ -11,7 +11,7 @@ export default function Collaborator(props) {
     const { user } = props;
 
     const [leads, setLeads] = useState([])
-    const [nbleads, setNBLeads] = useState(2)
+    const [nbleads, setNBLeads] = useState(100)
     const [region, setRegion] = useState()
     const [regionCount, setRegionCount] = useState(0)
     
@@ -59,16 +59,16 @@ export default function Collaborator(props) {
                         </select>
                     </div>
                     <div className="buttons">
-                        {nbleads > 0 && <img id="icons" src={rmIcon} alt="rm Icon" onClick={() => setNBLeads(nbleads - 2)}/>}
-                        <input id="add-leads-btn" onClick={() => addLeadsToCollaborator()} type="button" value={"Ajouter " + nbleads + " leads"}/>
-                        <img id="icons" src={addIcon} alt="Add leads Icon" onClick={() => setNBLeads(nbleads + 2)}/>
+                        {nbleads > 0 && <img id="icons" src={rmIcon} alt="rm Icon" onClick={() => setNBLeads(nbleads - 50)}/>}
+                        <input id="add-leads-btn" disabled={!region} onClick={() => addLeadsToCollaborator()} type="button" value={"Ajouter " + nbleads + " leads"}/>
+                        <img id="icons" src={addIcon} alt="Add leads Icon" onClick={() => setNBLeads(nbleads + 50)}/>
                     </div>
                 </div>
             </div>
-            <div className="action-btns">
+            {/* <div className="action-btns">
                 <input className="actions" type="button" value={"Reset password"}/>
-                {/* <input className="actions" type="button" value={"Supprimer"}/> */}
-            </div>
+                <input className="actions" type="button" value={"Supprimer"}/>
+            </div> */}
         </div>
     );
 }

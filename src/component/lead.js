@@ -43,6 +43,7 @@ function Lead(props) {
         housing_status,
         commentaire,
         statut,
+        income_tax,
         assigned_to
     } = props.lead;
     
@@ -101,11 +102,11 @@ function Lead(props) {
                 <InfoCol label="Propriétaire" id={id} champ="housing_status" value={housing_status} />
             </div>
             <div className="row-1">
-                <InfoCol label="Imposition" id={id} champ="" value={"EMPTY"} />
+                <InfoCol label="Imposition" id={id} champ="income_tax" value={income_tax} />
                 <InfoCol label="Année de naissance" id={id} champ="year_of_birth" value={year_of_birth} />
                 <InfoCol label="Code postal" id={id} champ="zipcode" value={zipcode} />
             </div>
-            <div className="row-1">
+            {/* <div className="row-1">
                 <InfoCol label="Profession" id={id} champ="" value={"EMPTY"} />
                 <InfoCol label="Situation familiale" id={id} champ="" value={"EMPTY"} />
                 <InfoCol label="Status juridique" id={id} champ="" value={"EMPTY"} />
@@ -113,12 +114,12 @@ function Lead(props) {
             <div className="row-1">
                 <InfoCol label="Addresse" id={id} champ="" value={"EMPTY"} />
                 <InfoCol label="Enfant ?" id={id} champ="" value={"EMPTY"} />
-            </div>
+            </div> */}
             <div className="commentaire">
                 <p className='info-label'>Commentaire</p>
                 <div className='com-col'>
-                    {!focusCom && <p className='info-commentaire' onClick={() => setFocusCom(true)}>{commentaire ? commentaire : "Cliquez pour écrire un commentaire"}</p> }
-                    { focusCom && <textarea id="com-value" type='text' defaultValue={commentaire} onChange={(e) => setNewValue(e.target.value)}/> }
+                    {!focusCom && <p className='info-commentaire' onClick={() => setFocusCom(true)}>{newValue ? newValue : "Cliquez pour écrire un commentaire"}</p> }
+                    { focusCom && <textarea id="com-value" type='text' defaultValue={newValue} onChange={(e) => setNewValue(e.target.value)}/> }
                     { focusCom && <img id="saveIconCom" src={saveIcon} alt="Save Com Icon" onClick={updateCommentaire}/> }
                 </div>
             </div>

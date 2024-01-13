@@ -1,9 +1,7 @@
 import axios from 'axios';
-import dotenv from 'dotenv'
-dotenv.config()
 
 //const URL = "http://127.0.0.1:8080"
-const URL = process.env.HOST_URL;
+const URL = 'http://51.178.83.139:8800/';
 
 const axiosInstance = axios.create({
     baseURL: URL
@@ -27,9 +25,36 @@ export async function getManagerLeads(id) {
     }
 }
 
+export async function getManagerLeadsCount(id) {
+    try {
+        const res = await axiosInstance.get("leads/manager/count/" + id);
+        return (res);
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+export async function getManagerLeadsCountNotAssigned(id) {
+    try {
+        const res = await axiosInstance.get("leads/manager/count/notassigned/" + id);
+        return (res);
+    } catch (err) {
+        console.error(err);
+    }
+}
+
 export async function getUserLeads(id) {
     try {
         const res = await axiosInstance.get("leads/user/" + id);
+        return (res);
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+export async function getUserLeadsCount(id) {
+    try {
+        const res = await axiosInstance.get("leads/user/count/" + id);
         return (res);
     } catch (err) {
         console.error(err);

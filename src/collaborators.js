@@ -1,6 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import { clearNRP, createCollaborator, getCollaborators, getManagerLeads, getNRPCount, getUser, getUserEmail } from "./api/axios";
+import {
+    clearNRP,
+    createCollaborator,
+    getCollaborators,
+    getManagerLeadsCount,
+    getManagerLeadsCountNotAssigned,
+    getNRPCount,
+    getUser,
+    getUserEmail
+} from "./api/axios";
+
 import { UserType } from "./context/enums";
 import addIcon from './images/add_icon.svg'
 import Header from "./component/header";
@@ -33,25 +43,27 @@ export default function Collaborators() {
 
     const { auth } = useContext(AuthContext)
     
-    const [ leads, setLeads ] = useState([])
     const [ collaborators, setCollaborators ] = useState([])
     const [ email, setEmail ] = useState("")
     const [ firstname, setFirstname ] = useState("")
     const [ lastname, setLastname ] = useState("")
     const [ manager, setManager ] = useState("")
     const [ nrpCount, setNrpCount ] = useState(0)
+    const [ totalCount, setTotalCount ] = useState(0)
+    const [ notAssignedCount, setNotAssignedCount ] = useState(0)
 
     const isManager = auth.user_type === UserType.MANAGER;
 
     useEffect(() => {
         if (auth.user_type === UserType.MANAGER) {
             getCollaborators(auth.id).then((res) => { if (res) setCollaborators(res.data) })
-            getManagerLeads(auth.id).then((res) => { if (res) setLeads(res.data) })
+            getManagerLeadsCount(auth.id).then((res) => { if (res) setTotalCount(res.data) })
+            getManagerLeadsCountNotAssigned(auth.id).then((res) => { if (res) setNotAssignedCount(res.data) })
             getNRPCount().then((res) => { if (res) setNrpCount(res.data) })
         } else if (auth.user_type === UserType.USER) {
             getUser(auth.manager_id).then((res) => { if (res) setManager(res.data) })
         }
-    })
+    }, [auth])
 
     const addCollaborateur = () => {
         getUserEmail(email).then((res) => {
@@ -63,7 +75,7 @@ export default function Collaborators() {
                         firstname: firstname,
                         lastname: lastname,
                         user_type: UserType.USER,
-                        manager_id: 1
+                        manager_id: auth.id
                     });
                     createCollaborator(json)
                     setEmail("")
@@ -85,8 +97,8 @@ export default function Collaborators() {
                     <p className="title-manager">{manager.firstname + " " + manager.lastname }</p>
                 </div>}
                 {isManager && <div className="leads-stat">
-                    <Stat label={"Total leads"} value={leads.length} />
-                    <Stat label={"Leads non assigné"} value={leads.filter((l) => { return !l.assigned_to; }).length} />
+                    <Stat label={"Total leads"} value={totalCount} />
+                    <Stat label={"Leads non assigné"} value={notAssignedCount} />
                 </div>}
                 {isManager && <div className="leads-stat">
                     <Input onChange={(e) => setEmail(e.target.value)} label={"Email"}/>
