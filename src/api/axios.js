@@ -16,9 +16,15 @@ export async function getLeads() {
     }
 }
 
-export async function getManagerLeads(id) {
+export async function getManagerLeads(id, search, limit, offset) {
     try {
-        const res = await axiosInstance.get("leads/manager/" + id);
+        const json = JSON.stringify({ search: search, limit: limit, offset: offset })
+        const res = await axiosInstance.post("leads/manager/" + id, json,
+        {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
         return (res);
     } catch (err) {
         console.error(err);

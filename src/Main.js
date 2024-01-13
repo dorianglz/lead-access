@@ -2,7 +2,7 @@ import AuthContext from './context/AuthProvider';
 import Lead from './component/lead';
 import Header from './component/header';
 import { getManagerLeads, getUserLeads, getManagerLeadsCount, getUserLeadsCount } from './api/axios';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { LeadStatus, UserType } from './context/enums';
 import Toggle from 'react-toggle'
 
@@ -10,6 +10,7 @@ import './style/App.css';
 
 import leftArrow from './images/left-arrow.svg'
 import rightArrow from './images/right-arrow.svg'
+import { useIntersection } from '@mantine/hooks';
 
 function MainPage() {
 
@@ -22,75 +23,57 @@ function MainPage() {
   const [ index, setIndex ] = useState(0)
   const [ totalCount, setTotalCount ] = useState("")
   const [ leads, setLeads ] = useState([])
-  const [ display, setDisplay ] = useState([])
 
-  const updateData = (data) => {
-    if (!pagelaod) {
-      setDisplay(data)
-      setPageload(true)
-    }
-    setLeads(data)
-  }
+  const [ itemParPage ] = useState(10);
+  const [ currentPage, setCurrentPage ] = useState(0);
 
-  useEffect(() => {
-    if (!pagelaod) {
-      if (auth.user_type === UserType.MANAGER) {
-        getManagerLeads(auth.id).then((res) => updateData(res.data))
-        getManagerLeadsCount(auth.id).then((res) => setTotalCount(res.data))
-      } else {
-        getUserLeads(auth.id).then((res) => updateData(res.data))      
-        getUserLeadsCount(auth.id).then((res) => setTotalCount(res.data))      
-      }
-    }
+  const lastPostRef = useRef(null)
+  const { ref, entry } = useIntersection({
+    root: lastPostRef.current,
+    threshold: 1
   })
 
-  useEffect(() => {
-    const result = leads.filter((lead) => {
-      const l = makeString(lead).toLocaleLowerCase()
-      const i = input.toLocaleLowerCase()
-
-      return l.includes(i)
-    })
-    setDisplay(result);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [input])
-
-  const formatNumer = (num) => {
-    if (num[0] !== '0' && num.length < 10) {
-      return '0' + num;
-    } else {
-      return num;
-    }
+  const fetchNextPage = () => {
+    getManagerLeads(auth.id, input, itemParPage, (currentPage + 1) * itemParPage).then((res) => setLeads([...leads, ...res.data]))
+    setCurrentPage(currentPage + 1)
   }
 
-  const makeString = (lead) => {
-    return (lead.email
-    + " " + lead.firstname
-    + " " + lead.lastname
-    + " " + formatNumer(lead.phone_number_concatenated)
-    + " " + lead.departement
-    + " " + lead.year_of_birth
-    + " " + lead.zipcode);
+  useEffect(() => {
+    if (entry?.isIntersecting) fetchNextPage()
+    // eslint-disable-next-line
+  }, [entry])
+ 
+  const setup = () => {
+    if (!pagelaod) {
+      if (auth.user_type === UserType.MANAGER) {
+        getManagerLeads(auth.id, input, itemParPage, currentPage * itemParPage).then((res) => setLeads(res.data))
+        getManagerLeadsCount(auth.id).then((res) => setTotalCount(res.data))
+      } else {
+        getUserLeads(auth.id).then((res) => setLeads(res.data))      
+        getUserLeadsCount(auth.id).then((res) => setTotalCount(res.data))      
+      }
+      setPageload(true)
+    }
   }
   
   const handleChange = (e) => {
-    setInput(e.target.value)
+    if (e.target.value) {
+      setCurrentPage(0)
+      setLeads([])
+      setInput(e.target.value)
+      getManagerLeads(auth.id, input, itemParPage, currentPage * itemParPage).then((res) => setLeads(res.data))
+    }
   }
 
+  setup();
+  
   return (
     <div className="App">
       <Header />
       <div className='body'>
         <div className='stat-title'>
-          <h1>{'Total : '}</h1>
           <h1 style={{color: "#24398A"}}>{totalCount}</h1>
           <h1>{' leads'}</h1>
-        </div>
-        <div className='stat-title'>
-          <h1>{'Affiché : '}</h1>
-          <h1 style={{color: "#24398A"}}>{input.length === 0 ? leads.filter((l) => statut !== "" ? l.statut === statut : true).length 
-          : display.filter((l) => statut !== "" ? l.statut === statut : true).length}</h1>
-          <h1>{leads.length > 1 ? "leads" : "lead"}</h1>
         </div>
         <div className='filter'>
           <div className='filter-names'>
@@ -121,24 +104,54 @@ function MainPage() {
         { unique && leads[index] && 
         <>
           <div className='controls'>
-            <img className='ctrl-icon' src={leftArrow} alt='left arrow' onClick={() => setIndex(index - 1)}/>
-            <img className='ctrl-icon' src={rightArrow} alt='right arrow' onClick={() => setIndex(index + 1)}/>
+            {index !== 0 ? <img className='ctrl-icon' src={leftArrow} alt='left arrow' onClick={() => setIndex(index - 1)}/> : <div></div>}
+            {index !== leads.length ? <img className='ctrl-icon' src={rightArrow} alt='right arrow' onClick={() => setIndex(index + 1)}/> : <div></div>}
           </div>
           <Lead lead={leads[index]}/>
         </> }
         { !unique && <div className='leads'>
-              { input.length === 0 ?
-              leads.filter((l) => statut !== "" ? l.statut === statut : true)
-              .map((lead) => { return <Lead key={lead.id} lead={lead}/> }) :
-              
-              display.filter((l) => statut !== "" ? l.statut === statut : true)
-              .map((lead) => { return <Lead key={lead.id} lead={lead}/> })
-              }
+          { 
+            leads?.map((lead) => {
+              console.log(lead)
+              return <Lead key={lead.id} lead={lead}/>
+            })
+          }
             </div>
         }
+        <div ref={ref}></div>
       </div>
     </div>
   );
 }
 
 export default MainPage;
+
+
+  // useEffect(() => {
+  //   const result = leads.filter((lead) => {
+  //     const l = makeString(lead).toLocaleLowerCase()
+  //     const i = input.toLocaleLowerCase()
+
+  //     return l.includes(i)
+  //   })
+  //   setDisplay(result);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [input])
+
+  // const formatNumer = (num) => {
+  //   if (num[0] !== '0' && num.length < 10) {
+  //     return '0' + num;
+  //   } else {
+  //     return num;
+  //   }
+  // }
+
+  // const makeString = (lead) => {
+  //   return (lead.email
+  //   + " " + lead.firstname
+  //   + " " + lead.lastname
+  //   + " " + formatNumer(lead.phone_number_concatenated)
+  //   + " " + lead.departement
+  //   + " " + lead.year_of_birth
+  //   + " " + lead.zipcode);
+  // }

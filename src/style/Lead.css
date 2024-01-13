@@ -163,7 +163,7 @@
     gap: 10px;
 }
 
-#dropdown-statut {
+.dropdown-statut {
     background-color: unset;
     color: #FFF;
     border: unset;
@@ -172,6 +172,6 @@
     font-weight: 600;
 }
 
-#dropdown-statut:focus-visible {
+.dropdown-statut:focus-visible {
     outline: unset;
 }

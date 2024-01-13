@@ -20,7 +20,7 @@ function InfoCol(props) {
     return (
         <div className='infoCol'>
             <p className='info-label'>{label}</p>
-            {!focus && <p onClick={ () => setFocus(true) } className='info-value'>{value}</p>}
+            {!focus && <p onClick={ () => setFocus(true) } className='info-value'>{value ? value : '-'}</p>}
             { focus &&
                 <div className='update-col'>
                     <input id="update-value" type='text' defaultValue={value} onChange={(e) => setNewValue(e.target.value)}/>
@@ -130,7 +130,7 @@ function Lead(props) {
                 </div>
                 <div className='footer-status'>
                     <p className='footer-label'>Statut : </p>
-                    <select id="dropdown-statut" defaultValue={statut ? statut : 'DEFAULT'}
+                    <select className="dropdown-statut" defaultValue={statut ? statut : 'DEFAULT'}
                     onChange={(value) => updateStatut(value)}>
                         <option value="DEFAULT" disabled>Choisir un statut</option>
                         {Object.values(LeadStatus).map((l, i) => {
