@@ -118,7 +118,9 @@ function MainPage() {
           <Lead lead={leads[index]}/>
         </> }
         { !unique && <div className='leads'>
-          { 
+          { statut ? leads?.filter((l) => l.statut === statut).map((lead) => {
+              return <Lead key={lead.id} lead={lead}/>
+            }) : 
             leads?.map((lead) => {
               return <Lead key={lead.id} lead={lead}/>
             })
