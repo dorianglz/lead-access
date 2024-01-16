@@ -3,20 +3,22 @@ import React, { useEffect, useState } from "react";
 import "../style/Collaborators.css"
 import addIcon from '../images/add_icon.svg'
 import rmIcon from '../images/rm_icon.svg'
-import { addLeads, getLeadsDepartementCount, getUserLeads } from "../api/axios";
+import { addLeads, getLeadsDepartementCount, getUserLeadsCount } from "../api/axios";
 import { Region } from "../context/enums";
 
 export default function Collaborator(props) {
     
     const { user } = props;
 
-    const [leads, setLeads] = useState([])
+    const [leads, setLeads] = useState(0)
     const [nbleads, setNBLeads] = useState(100)
     const [region, setRegion] = useState()
     const [regionCount, setRegionCount] = useState(0)
     
     useEffect(() => {
-        getUserLeads(user.id).then((res) => { if (res) setLeads(res.data) })
+        getUserLeadsCount(user.id).then((res) => { 
+            if (res) setLeads(res.data)
+        })
     }, [user.id])
 
     useEffect(() => {
@@ -41,7 +43,7 @@ export default function Collaborator(props) {
         <div className="collaborator">
             <div className="first-row">
                 <p className="col-name">{user.firstname + " " + user.lastname}</p>
-                <p className="number-of-leads">{leads.length} leads</p>
+                <p className="number-of-leads">{leads} leads</p>
             </div>
             <div className="second-row">
                 <div className="col-email">
