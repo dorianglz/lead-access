@@ -132,7 +132,7 @@ function MainPage() {
             {index !== 0 ? <img className='ctrl-icon' src={leftArrow} alt='left arrow' onClick={() => setIndex(index - 1)}/> : <div></div>}
             {index !== leads.length ? <img className='ctrl-icon' src={rightArrow} alt='right arrow' onClick={() => setIndex(index + 1)}/> : <div></div>}
           </div>
-          <Lead lead={leads[index]}/>
+          <Lead key={index} lead={leads[index]}/>
         </> }
         { !unique && <div className='leads'>
           { statut ? leads?.filter((l) => l.statut === statut).map((lead) => {
