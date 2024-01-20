@@ -1,7 +1,7 @@
 import AuthContext from './context/AuthProvider';
 import Lead from './component/lead';
 import Header from './component/header';
-import { getManagerLeads, getUserLeads, getManagerLeadsCount, getUserLeadsCount } from './api/axios';
+import { getManagerLeads, getUserLeads, getManagerLeadsCount, getUserLeadsCount, getAllCount, getAllCountUser } from './api/axios';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { LeadStatus, UserType } from './context/enums';
 import Toggle from 'react-toggle'
@@ -23,6 +23,7 @@ function MainPage() {
   const [ index, setIndex ] = useState(0)
   const [ totalCount, setTotalCount ] = useState("")
   const [ leads, setLeads ] = useState([])
+  const [ statutCount, setStatutCount ] = useState([])
 
   const [ itemParPage ] = useState(10);
   const [ currentPage, setCurrentPage ] = useState(0);
@@ -50,9 +51,17 @@ function MainPage() {
   const setup = () => {
     if (!pagelaod) {
       if (auth.user_type === UserType.MANAGER) {
+        getAllCount(auth.id).then((res) => {
+          setStatutCount(res.data)
+          console.log(res.data)
+        })
         getManagerLeads(auth.id, input, itemParPage, currentPage * itemParPage).then((res) => setLeads(res.data))
         getManagerLeadsCount(auth.id).then((res) => setTotalCount(res.data))
       } else {
+        getAllCountUser(auth.id).then((res) => {
+          setStatutCount(res.data)
+          console.log(res.data)
+        })
         getUserLeads(auth.id, input, itemParPage, currentPage * itemParPage).then((res) => setLeads(res.data))      
         getUserLeadsCount(auth.id).then((res) => setTotalCount(res.data))      
       }
@@ -82,6 +91,14 @@ function MainPage() {
         <div className='stat-title'>
           <h1 style={{color: "#24398A"}}>{totalCount}</h1>
           <h1>{' leads'}</h1>
+        </div>
+        <div className='statut-list'>
+          {statutCount?.map((s) => {
+            return (<div className='statut-item'>
+              <p className='statut-label'>{s.statut ? s.statut : 'Sans statut'}</p>
+              <p className='statut-value'>{s.count_statut}</p>
+            </div>);
+          })}
         </div>
         <div className='filter'>
           <div className='filter-names'>

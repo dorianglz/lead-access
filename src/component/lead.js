@@ -2,30 +2,27 @@ import { useEffect, useState } from 'react';
 import { getUser, updateLead } from '../api/axios';
 import { LeadStatus } from '../context/enums';
 
-import saveIcon from '../images/save.svg'
 import '../style/Lead.css';
 
 function InfoCol(props) {
     
     const { id, label, value, champ } = props;
-    const [ focus, setFocus ] = useState(false)
     const [ newValue, setNewValue ] = useState(value)
 
     const updateChamp = () => {
         const json = JSON.stringify({ champ: champ, value: newValue })
         updateLead(id, json);
-        setFocus(false)
     }
 
     return (
         <div className='infoCol'>
             <p className='info-label'>{label}</p>
-            {!focus && <p onClick={ () => setFocus(true) } className='info-value'>{value ? value : '-'}</p>}
-            { focus &&
-                <div className='update-col'>
-                    <input id="update-value" type='text' defaultValue={value} onChange={(e) => setNewValue(e.target.value)}/>
-                    <img id="saveIcon" src={saveIcon} alt="Save Icon" onClick={updateChamp}/>
-                </div> }
+            <div className='update-col'>
+                <input id="update-value" type='text' placeholder={label}
+                    defaultValue={value} onBlur={updateChamp}
+                    onChange={(e) => setNewValue(e.target.value)}
+                />
+            </div>
         </div>
     );
 }
@@ -44,10 +41,14 @@ function Lead(props) {
         commentaire,
         statut,
         income_tax,
-        assigned_to
+        assigned_to,
+        profession,
+        family,
+        legal_status,
+        adresse,
+        enfant
     } = props.lead;
     
-    const [ focusCom, setFocusCom ] = useState(false)
     const [ newValue, setNewValue ] = useState(commentaire)
     const [ agent, setAgent ] = useState(null)
     const [ nom, setNom ] = useState(lastname)
@@ -65,7 +66,6 @@ function Lead(props) {
     const updateCommentaire = () => {
         const json = JSON.stringify({ champ: 'commentaire', value: newValue })
         updateLead(id, json);
-        setFocusCom(false)
     }
 
     const updateStatut = (e) => {
@@ -83,18 +83,18 @@ function Lead(props) {
         updateLead(id, json);
     }
 
+    const handleBlur = () => {
+        updateNom()
+        updatePrenom()
+        setFocusName(false)
+    }
+
     return (
         <div className="lead">
-            {!focusName && <h2 className="names" onClick={() => setFocusName(true)}>{firstname + " " + lastname}</h2> }
+            {!focusName && <h2 className="names" onClick={() => setFocusName(true)}>{prenom + " " + nom}</h2> }
             { focusName && <div className='input-names'>
-                <input id='input-name' type='text' value={prenom} onChange={(e) => setPrenom(e.target.value)} />
-                <input id='input-name' type='text' value={nom} onChange={(e) => setNom(e.target.value)} />
-                <img id="input-name-save" src={saveIcon} alt="Save Name Icon"
-                onClick={() => {
-                    updateNom()
-                    updatePrenom()
-                    setFocusName(false)
-                }}/>
+                <input className='input-name' type='text' value={prenom} onBlur={handleBlur} onChange={(e) => setPrenom(e.target.value)} />
+                <input className='input-name' type='text' value={nom} onBlur={handleBlur} onChange={(e) => setNom(e.target.value)} />
             </div>}
             <div className="row-1">
                 <InfoCol label="Email" id={id} champ="email" value={email} />
@@ -106,30 +106,28 @@ function Lead(props) {
                 <InfoCol label="Année de naissance" id={id} champ="year_of_birth" value={year_of_birth} />
                 <InfoCol label="Code postal" id={id} champ="zipcode" value={zipcode} />
             </div>
-            {/* <div className="row-1">
-                <InfoCol label="Profession" id={id} champ="" value={"EMPTY"} />
-                <InfoCol label="Situation familiale" id={id} champ="" value={"EMPTY"} />
-                <InfoCol label="Status juridique" id={id} champ="" value={"EMPTY"} />
+            <div className="row-1">
+                <InfoCol label="Profession" id={id} champ="profession" value={profession} />
+                <InfoCol label="Situation familiale" id={id} champ="family" value={family} />
+                <InfoCol label="Status juridique" id={id} champ="legal_status" value={legal_status} />
             </div>
             <div className="row-1">
-                <InfoCol label="Addresse" id={id} champ="" value={"EMPTY"} />
-                <InfoCol label="Enfant ?" id={id} champ="" value={"EMPTY"} />
-            </div> */}
+                <InfoCol label="Addresse" id={id} champ="adresse" value={adresse} />
+                <InfoCol label="Enfant ?" id={id} champ="enfant" value={enfant} />
+            </div>
             <div className="commentaire">
                 <p className='info-label'>Commentaire</p>
                 <div className='com-col'>
-                    {!focusCom && <p className='info-commentaire' onClick={() => setFocusCom(true)}>{newValue ? newValue : "Cliquez pour écrire un commentaire"}</p> }
-                    { focusCom && <textarea id="com-value" type='text' defaultValue={newValue} onChange={(e) => setNewValue(e.target.value)}/> }
-                    { focusCom && <img id="saveIconCom" src={saveIcon} alt="Save Com Icon" onClick={updateCommentaire}/> }
+                    <textarea id="com-value" type='text' defaultValue={newValue} onBlur={updateCommentaire} onChange={(e) => setNewValue(e.target.value)}/>
                 </div>
             </div>
             <div className='footer'>
                 <div className='footer-agent'>
-                    {agent && <p className='footer-label'>Agent : </p>}
+                    {agent && <p className='footer-label'>Agent: </p>}
                     {agent && <p className='footer-value'>{agent}</p>}
                 </div>
                 <div className='footer-status'>
-                    <p className='footer-label'>Statut : </p>
+                    <p className='footer-label'>Statut: </p>
                     <select className="dropdown-statut" defaultValue={statut ? statut : 'DEFAULT'}
                     onChange={(value) => updateStatut(value)}>
                         <option value="DEFAULT" disabled>Choisir un statut</option>

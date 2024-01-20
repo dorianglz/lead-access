@@ -24,7 +24,7 @@
     display: flex;
 }
 
-#input-name {
+.input-name {
     font-size: 34px;
     font-weight: 700;
     color: #24398A;
@@ -32,7 +32,9 @@
     background-color: unset;
     padding: 0;
     height: fit-content;
-    width: 40%;    
+    width: 45%;   
+    border: 1px solid #24388ac0;
+    padding: 0 10px;
 }
 
 #input-name-save {
@@ -43,6 +45,7 @@
 .row-1 {
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .infoCol {
@@ -74,15 +77,22 @@
 
 #update-value {
     border: none;
-    width: unset;
+    width: 100%;
     height: unset;
     border-radius: unset;
     padding: unset;
     background-color: unset;
     font-weight: 700;
     font-size: 18px;
-    color: #24398A;
+    color: #252525;
 }
+
+#update-value::placeholder {
+    opacity: 0.5;
+    font-weight: 400;
+    font-size: medium;
+}
+
 
 #saveIcon {
     width: 20px;
@@ -174,4 +184,59 @@
 
 .dropdown-statut:focus-visible {
     outline: unset;
+}
+
+.statut-list {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.statut-item {
+    display: flex;
+    border: 1px solid #24388a43;
+    flex-direction: column;
+    flex: 1;
+    gap: 8px;
+    padding: 4px;
+    border-radius: 8px;
+    justify-content: space-between;
+}
+
+.statut-label {
+    color: #6B6B6B;
+    font-weight: bold;
+}
+
+.statut-value {
+    color: #24398A;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+@media only screen and (max-width: 600px) {
+
+    .infoCol {
+        flex-grow: 2;
+    }
+
+    .info-label {
+        font-size: 12px;
+    }
+
+    #update-value {
+        font-size: 12px;
+    }
+
+    .footer-label {
+        font-size: 12px;
+    }
+
+    .footer-value {
+        font-size: 12px;
+    }
+
+    .dropdown-statut {
+        font-size: 12px;
+    }
 }

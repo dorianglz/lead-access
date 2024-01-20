@@ -124,6 +124,24 @@ export async function getNRPCount() {
     }
 }
 
+export async function getAllCount(id) {
+    try {
+        const res = await axiosInstance.post("all/count/manager/" + id);
+        return (res);
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+export async function getAllCountUser(id) {
+    try {
+        const res = await axiosInstance.post("all/count/user/" + id);
+        return (res);
+    } catch (err) {
+        console.error(err);
+    }
+}
+
 export async function createCollaborator(json) {
     try {
         const res = await axiosInstance.post("users", json,
