@@ -23,11 +23,11 @@ export default function Collaborator(props) {
 
     useEffect(() => {
         if (region) {
-            const json = JSON.stringify({ region: region.split(',') })
+            const json = JSON.stringify({ region: region.split(','), id: user.manager_id })
             
             getLeadsDepartementCount(json).then((res) => { if (res) setRegionCount(res.data) })
         }
-    }, [region])
+    }, [region, user])
 
     const addLeadsToCollaborator = () => {
         const json = JSON.stringify({ region: region.split(','), len: nbleads })

@@ -70,6 +70,7 @@ function Lead(props) {
 
     const updateStatut = (e) => {
         const json = JSON.stringify({ champ: 'statut', value: e.target.value })
+        props.lead.statut = e.target.value;
         updateLead(id, json);
     }
 

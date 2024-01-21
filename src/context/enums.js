@@ -18,7 +18,7 @@ export const LeadStatus = {
 export const Region = {
     IDF: {
         display: "Ile-de-France / Hauts-de-France",
-        CodePostal : ["91", "92", "93", "94", "95"]
+        CodePostal : ["75", "77", "78", "91", "92", "93", "94", "95"]
     },
     PACA: {
         display: "Provence-Alpes-Côte d’Azur",
