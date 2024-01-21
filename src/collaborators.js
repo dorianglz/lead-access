@@ -59,7 +59,7 @@ export default function Collaborators() {
             getCollaborators(auth.id).then((res) => { if (res) setCollaborators(res.data) })
             getManagerLeadsCount(auth.id).then((res) => { if (res) setTotalCount(res.data) })
             getManagerLeadsCountNotAssigned(auth.id).then((res) => { if (res) setNotAssignedCount(res.data) })
-            getNRPCount().then((res) => { if (res) setNrpCount(res.data) })
+            getNRPCount(auth.id).then((res) => { if (res) setNrpCount(res.data) })
         } else if (auth.user_type === UserType.USER) {
             getUser(auth.manager_id).then((res) => { if (res) setManager(res.data) })
         }
@@ -108,7 +108,7 @@ export default function Collaborators() {
                 </div>}
                 {isManager && <div className="nrp-col">
                     <p className="nrps">{nrpCount + " NRP"}</p>
-                    <input className="actions" onClick={() => clearNRP()} type="button" value={"Récupérer tous les NRP"}/>
+                    <input className="actions" onClick={() => clearNRP(auth.id)} type="button" value={"Récupérer tous les NRP"}/>
                 </div>}
                 {isManager && <div className="collaborators-list">
                     {collaborators.map((c) => {

@@ -106,18 +106,18 @@ export async function getNRP() {
     }
 }
 
-export async function clearNRP() {
+export async function clearNRP(id) {
     try {
-        const res = await axiosInstance.get("leads/clear");
+        const res = await axiosInstance.get("leads/clear/" + id);
         return (res);
     } catch (err) {
         console.error(err);
     }
 }
 
-export async function getNRPCount() {
+export async function getNRPCount(id) {
     try {
-        const res = await axiosInstance.get("nrp/count");
+        const res = await axiosInstance.get("nrp/count/" + id);
         return (res);
     } catch (err) {
         console.error(err);
