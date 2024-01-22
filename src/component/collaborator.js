@@ -30,7 +30,7 @@ export default function Collaborator(props) {
     }, [region, user])
 
     const addLeadsToCollaborator = () => {
-        const json = JSON.stringify({ region: region.split(','), len: nbleads })
+        const json = JSON.stringify({ region: region.split(','), len: nbleads, id: user.manager_id })
         
         addLeads(user.id, json).then((res) => {
             if (res) {

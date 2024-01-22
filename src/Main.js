@@ -36,9 +36,9 @@ function MainPage() {
 
   const fetchNextPage = () => {
     if (auth.user_type === UserType.MANAGER) {
-      getManagerLeads(auth.id, input, itemParPage, (currentPage + 1) * itemParPage).then((res) => setLeads([...leads, ...res.data]))
+      getManagerLeads(auth.id, input, statut, itemParPage, (currentPage + 1) * itemParPage).then((res) => { if (res.data) { setLeads([...leads, ...res.data])} })
     } else {
-      getUserLeads(auth.id, input, itemParPage, (currentPage + 1) * itemParPage).then((res) => setLeads([...leads, ...res.data]))
+      getUserLeads(   auth.id, input, statut, itemParPage, (currentPage + 1) * itemParPage).then((res) => { if (res.data) { setLeads([...leads, ...res.data])} })
     }
     setCurrentPage(currentPage + 1)
   }
@@ -51,19 +51,17 @@ function MainPage() {
   const setup = () => {
     if (!pagelaod) {
       if (auth.user_type === UserType.MANAGER) {
-        getAllCount(auth.id).then((res) => {
-          setStatutCount(res.data)
-          console.log(res.data)
-        })
-        getManagerLeads(auth.id, input, itemParPage, currentPage * itemParPage).then((res) => setLeads(res.data))
+
+        getAllCount(auth.id).then((res) => { setStatutCount(res.data) })
+        getManagerLeads(auth.id, input, statut, itemParPage, currentPage * itemParPage).then((res) => { setLeads(res.data) })  
         getManagerLeadsCount(auth.id).then((res) => setTotalCount(res.data))
+      
       } else {
-        getAllCountUser(auth.id).then((res) => {
-          setStatutCount(res.data)
-          console.log(res.data)
-        })
-        getUserLeads(auth.id, input, itemParPage, currentPage * itemParPage).then((res) => setLeads(res.data))      
+
+        getAllCountUser(auth.id).then((res) => { setStatutCount(res.data) })
+        getUserLeads(   auth.id, input, statut, itemParPage, currentPage * itemParPage).then((res) => { setLeads(res.data) })
         getUserLeadsCount(auth.id).then((res) => setTotalCount(res.data))      
+
       }
       setPageload(true)
     }
@@ -75,14 +73,16 @@ function MainPage() {
       setLeads([])
       setInput(e.target.value)
       if (auth.user_type === UserType.MANAGER) {
-        getManagerLeads(auth.id, input, itemParPage, currentPage * itemParPage).then((res) => setLeads(res.data))
+        getManagerLeads(auth.id, input, statut, itemParPage, 0).then((res) => setLeads(...res.data))
       } else {
-        getUserLeads(auth.id, input, itemParPage, currentPage * itemParPage).then((res) => setLeads(res.data))
+        getUserLeads(   auth.id, input, statut, itemParPage, 0).then((res) => setLeads(...res.data))
       }
     }
   }
 
-  setup();
+  useEffect(() => {
+    setup();
+  })
 
   return (
     <div className="App">
@@ -110,7 +110,11 @@ function MainPage() {
           <div className='filter-names'>
             <h2 className='filter-tilte'>Statut</h2>
             <select id="filter-statut" defaultValue={statut ? statut : ''}
-            onChange={(e) => { setStatut(e.target.value) }}>
+            onChange={(e) => {
+              setStatut(e.target.value)
+              setCurrentPage(-1)
+              setLeads([])
+            }}>
             <option value="" >Choisir un statut</option>
               {Object.values(LeadStatus).map((l, i) => {
                   return <option key={i} value={l}>{l}</option>

@@ -16,9 +16,9 @@ export async function getLeads() {
     }
 }
 
-export async function getManagerLeads(id, search, limit, offset) {
+export async function getManagerLeads(id, search, status, limit, offset) {
     try {
-        const json = JSON.stringify({ search: search, limit: limit, offset: offset })
+        const json = JSON.stringify({ search: search, status: status, limit: limit, offset: offset })
         const res = await axiosInstance.post("leads/manager/" + id, json,
         {
             headers: {
@@ -49,9 +49,9 @@ export async function getManagerLeadsCountNotAssigned(id) {
     }
 }
 
-export async function getUserLeads(id, search, limit, offset) {
+export async function getUserLeads(id, search, status, limit, offset) {
     try {
-        const json = JSON.stringify({ search: search, limit: limit, offset: offset })
+        const json = JSON.stringify({ search: search, status: status, limit: limit, offset: offset })
         const res = await axiosInstance.post("leads/users/" + id, json,
         {
             headers: {
