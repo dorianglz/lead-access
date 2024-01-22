@@ -73,9 +73,9 @@ function MainPage() {
       setLeads([])
       setInput(e.target.value)
       if (auth.user_type === UserType.MANAGER) {
-        getManagerLeads(auth.id, input, statut, itemParPage, 0).then((res) => setLeads(...res.data))
+        getManagerLeads(auth.id, input, statut, itemParPage, 0).then((res) => { if(res) setLeads(res.data) })
       } else {
-        getUserLeads(   auth.id, input, statut, itemParPage, 0).then((res) => setLeads(...res.data))
+        getUserLeads(   auth.id, input, statut, itemParPage, 0).then((res) => { if(res) setLeads(res.data) })
       }
     }
   }
@@ -139,10 +139,8 @@ function MainPage() {
           <Lead key={index} lead={leads[index]}/>
         </> }
         { !unique && <div className='leads'>
-          { statut ? leads?.filter((l) => l.statut === statut).map((lead) => {
-              return <Lead key={lead.id} lead={lead}/>
-            }) : 
-            leads?.map((lead) => {
+          { 
+            leads && leads?.map((lead) => {
               return <Lead key={lead.id} lead={lead}/>
             })
           }
