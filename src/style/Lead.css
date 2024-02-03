@@ -196,7 +196,7 @@
     display: flex;
     border: 1px solid #24388a43;
     flex-direction: column;
-    flex: 1;
+    flex: 1 0 calc(15%); /* Répartir les éléments en 4 colonnes avec 10px de marge */
     gap: 8px;
     padding: 4px;
     border-radius: 8px;

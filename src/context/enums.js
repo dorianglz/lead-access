@@ -12,7 +12,8 @@ export const LeadStatus = {
     PAS_INTERESSE: "Pas intéressé",
     NULL: "Nul",
     FAKE_NUM: "Faux numéro",
-    SIGNE: "Signé"
+    SIGNE: "Signé",
+    SANS_STATUT: "Sans statut"
 }
 
 export const Region = {
